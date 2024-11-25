@@ -58,7 +58,10 @@ def create_claim_gpt(member_database_id: int, prompt: str):
                             "ndc_number": {"type": "string"},
                             "days_supply": {"type": "integer"},
                             "dispense_as_written": {"type": "boolean"},
-                            "date_prescription_written": {"type": "string"},
+                            "date_prescription_written": {
+                                "type": "string",
+                                "description": "date formatted as YYYY-MM-DD"
+                            },
                             "prescription_origin_code": {"type": "string"},
                             "ingredient_cost_submitted": {"type": "number"},
                             "dispensing_fee_submitted": {"type": "number"},
@@ -109,9 +112,9 @@ def create_claim_gpt(member_database_id: int, prompt: str):
     claim_data['member_id'] = member_database_id
     
     # Convert date string to date object if present
-    if 'date_prescription_written' in claim_data:
-        claim_data['date_prescription_written'] = datetime.strptime(
-            claim_data['date_prescription_written'], '%Y-%m-%d').date()
+    # if 'date_prescription_written' in claim_data:
+    #     claim_data['date_prescription_written'] = datetime.strptime(
+    #         claim_data['date_prescription_written'], '%Y-%m-%d').date()
 
     new_claim = Claim(**claim_data)
     session.add(new_claim)
