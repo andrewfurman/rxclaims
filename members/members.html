@@ -22,7 +22,9 @@
                 <tr class="border-t">
                     <td class="py-2 px-4">{{ member.member_id }}</td>
                     <td class="py-2 px-4">
-                        {{ member.first_name }} {{ member.last_name }}<br>
+                        <a href="{{ url_for('members.view_member', member_id=member.member_id) }}" class="text-purple-900 hover:text-purple-700">
+                            {{ member.first_name }} {{ member.last_name }}
+                        </a><br>
                         <span class="text-sm text-gray-600">{{ member.gender }}</span>
                     </td>
                     <td class="py-2 px-4">{{ member.date_of_birth }}</td>

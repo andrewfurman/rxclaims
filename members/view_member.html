@@ -1,0 +1,65 @@
+{% include 'templates/header.html' %}
+
+<div class="mx-5 mt-20">
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+        <!-- Member Basic Info -->
+        <div class="p-6 border-b">
+            <h1 class="text-3xl font-bold text-purple-900">
+                {{ member.first_name }} {{ member.last_name }}
+            </h1>
+            <p class="text-gray-600 mt-2">Member ID: {{ member.member_id }}</p>
+        </div>
+
+        <div class="p-6 grid grid-cols-2 gap-6">
+            <!-- Personal Information -->
+            <div class="space-y-6">
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h2 class="text-xl font-semibold mb-4 text-purple-900">Personal Information</h2>
+                    <div class="space-y-2">
+                        <p><span class="font-medium">Date of Birth:</span> {{ member.date_of_birth }}</p>
+                        <p><span class="font-medium">Gender:</span> {{ member.gender }}</p>
+                        <p><span class="font-medium">Phone:</span> {{ member.phone_number }}</p>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h2 class="text-xl font-semibold mb-4 text-purple-900">Address</h2>
+                    <div class="space-y-2">
+                        <p>{{ member.address }}</p>
+                        <p>{{ member.city }}, {{ member.state }} {{ member.zip_code }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Insurance Information -->
+            <div class="space-y-6">
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h2 class="text-xl font-semibold mb-4 text-purple-900">Insurance Information</h2>
+                    <div class="space-y-2">
+                        <p><span class="font-medium">Insurance ID:</span> {{ member.insurance_id_number }}</p>
+                        <p><span class="font-medium">Group Number:</span> {{ member.group_number }}</p>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h2 class="text-xl font-semibold mb-4 text-purple-900">Pharmacy Benefits</h2>
+                    <div class="space-y-2">
+                        <p><span class="font-medium">BIN:</span> {{ member.rx_bin }}</p>
+                        <p><span class="font-medium">PCN:</span> {{ member.rx_pcn }}</p>
+                        <p><span class="font-medium">Group:</span> {{ member.rx_group }}</p>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h2 class="text-xl font-semibold mb-4 text-purple-900">Copay Structure</h2>
+                    <div class="space-y-2">
+                        <p><span class="font-medium">Generic:</span> {{ member.copay_1_generic }}</p>
+                        <p><span class="font-medium">Preferred:</span> {{ member.copay_2_preferred }}</p>
+                        <p><span class="font-medium">Non-Preferred:</span> {{ member.copay_3_non_preferred }}</p>
+                        <p><span class="font-medium">Specialty:</span> {{ member.copay_4_specialty }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
