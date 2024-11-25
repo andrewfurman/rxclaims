@@ -13,17 +13,17 @@ class Claim(db.Model):
     member_id = db.Column(db.Integer, db.ForeignKey('members.database_id'), nullable=False)
     
     # Service Provider Information
-    service_provider_id_qualifier = db.Column(db.CHAR(2), nullable=False)
-    service_provider_id = db.Column(VARCHAR(15), nullable=False)
+    service_provider_id_qualifier = db.Column(db.TEXT, nullable=True)
+    service_provider_id = db.Column(db.TEXT, nullable=True)
     
     # Other Payer Information
-    other_payer_id_qualifier = db.Column(db.CHAR(2), nullable=True)
-    other_payer_id = db.Column(VARCHAR(15), nullable=True)
+    other_payer_id_qualifier = db.Column(db.TEXT, nullable=True)
+    other_payer_id = db.Column(db.TEXT, nullable=True)
     other_payer_amount_paid = db.Column(NUMERIC(10,2), nullable=True)
     
     # Diagnosis Information
-    diagnosis_code_qualifier = db.Column(db.CHAR(2), nullable=True)
-    diagnosis_code = db.Column(VARCHAR(15), nullable=True)
+    diagnosis_code_qualifier = db.Column(db.TEXT, nullable=True)
+    diagnosis_code = db.Column(db.TEXT, nullable=True)
     clinical_information = db.Column(TEXT, nullable=True)
     
     # Claim Details (AM07)
