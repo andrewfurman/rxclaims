@@ -1,0 +1,51 @@
+{% include 'templates/header.html' %}
+
+<div class="container mx-auto px-5 mt-20">
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white shadow-lg rounded-lg">
+            <thead class="bg-purple-900 text-white">
+                <tr>
+                    <th class="py-3 px-4 text-left">Member ID</th>
+                    <th class="py-3 px-4 text-left">Name</th>
+                    <th class="py-3 px-4 text-left">DOB</th>
+                    <th class="py-3 px-4 text-left">Member Phone & Address</th>
+                    <th class="py-3 px-4 text-left">Insurance</th>
+                    <th class="py-3 px-4 text-left">Pharmacy Benefits</th>
+                    <th class="py-3 px-4 text-left">Copays</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for member in members %}
+                <tr class="border-b hover:bg-gray-50">
+                    <td class="py-2 px-4">{{ member.member_id }}</td>
+                    <td class="py-2 px-4">
+                        {{ member.first_name }} {{ member.last_name }}<br>
+                        <span class="text-sm text-gray-600">{{ member.gender }}</span>
+                    </td>
+                    <td class="py-2 px-4">{{ member.date_of_birth }}</td>
+                    <td class="py-2 px-4">
+                        {{ member.phone_number }}<br>
+                        {{ member.address }}<br>
+                        {{ member.city }}, {{ member.state }} {{ member.zip_code }}
+                    </td>
+                    <td class="py-2 px-4">
+                        ID: {{ member.insurance_id_number }}<br>
+                        Group: {{ member.group_number }}
+                    </td>
+                    <td class="py-2 px-4">
+                        BIN: {{ member.rx_bin }}<br>
+                        PCN: {{ member.rx_pcn }}<br>
+                        Group: {{ member.rx_group }}
+                    </td>
+                    <td class="py-2 px-4">
+                        Generic: {{ member.copay_1_generic }}<br>
+                        Preferred: {{ member.copay_2_preferred }}<br>
+                        Non-Preferred: {{ member.copay_3_non_preferred }}<br>
+                        Specialty: {{ member.copay_4_specialty }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
