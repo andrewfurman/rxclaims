@@ -1,13 +1,13 @@
 from flask import Blueprint, render_template, request, jsonify
 from .create_member_gpt import create_member_gpt
 from .member_model import Member
+from sqlalchemy import desc
 
-members_bp = Blueprint('members', __name__, 
-                      template_folder='.')
+members_bp = Blueprint('members', __name__, template_folder='.')
 
 @members_bp.route('/members')
 def members():
-    members = Member.query.all()
+    members = Member.query.order_by(desc(Member.updated_at)).all()
     return render_template('members/members.html', members=members)
 
 @members_bp.route('/members/<member_id>')

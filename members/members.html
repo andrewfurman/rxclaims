@@ -2,10 +2,10 @@
 
 <div class="mx-5 mt-20">
     <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-        <div class="px-5 py-4">
+        <div class="px-2 py-2">
           <!-- Header row with flex layout -->
-          <div class="flex items-center space-x-4">
-            <h1 class="text-2xl font-bold">👥 Members</h1>
+          <div class="flex items-center space-x-4 px-2 py-2">
+            <h1 class="text-2xl font-bold">🪪 Members</h1>
 
             <input 
               type="text" 
@@ -34,15 +34,17 @@
                     <th class="py-2 px-4 text-left">Copays</th>
                 </tr>
             </thead>
+
             <tbody>
                 {% for member in members %}
                 <tr class="border-t">
-                    <td class="py-2 px-4">{{ member.member_id }}</td>
                     <td class="py-2 px-4">
                         <a href="{{ url_for('members.view_member', member_id=member.member_id) }}" class="text-purple-900 hover:text-purple-700">
-                            {{ member.first_name }} {{ member.last_name }}
-                        </a><br>
-                        <span class="text-sm text-gray-600">{{ member.gender }}</span>
+                            {{ member.member_id }}
+                        </a>
+                    </td>
+                    <td class="py-2 px-4">
+                        {{ member.first_name }} {{ member.last_name }}<br>
                     </td>
                     <td class="py-2 px-4">{{ member.date_of_birth }}</td>
                     <td class="py-2 px-4">
@@ -68,6 +70,7 @@
                 </tr>
                 {% endfor %}
             </tbody>
+            
         </table>
     </div>
 </div>
