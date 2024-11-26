@@ -43,5 +43,11 @@ class Member(db.Model):
     created_at = db.Column(db.DateTime(timezone=True), nullable=False, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime(timezone=True), nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
 
+    # Relationship
+    claims = db.relationship('Claim', 
+        cascade="all, delete-orphan", 
+        passive_deletes=True,
+        backref='member')
+
     def __repr__(self):
         return f'<Member {self.database_id}: {self.member_id} - {self.first_name} {self.last_name}>'

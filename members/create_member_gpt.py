@@ -64,7 +64,7 @@ def create_member_gpt(prompt):
                                 },
                                 "city": {
                                     "type": "string",
-                                    "description": "City of member's residence. Make sure that the city is in one of these counties unless specified otherwise in the prompt: Albany Bronx Broome Columbia Delaware Dutchess Fulton Greene Kings (Brooklyn) Montgomery Nassau New York (Manhattan) Orange Otsego Putnam Queens Rensselaer Richmond (Staten Island) Rockland Saratoga Schenectady Schoharie Suffolk Sullivan Ulster Warren Washington Westchester"
+                                    "description": "City of member's residence. If the city or location isn't specified in the prompt, make sure that the city is in one of these counties unless specified otherwise in the prompt: Albany Bronx Broome Columbia Delaware Dutchess Fulton Greene Kings (Brooklyn) Montgomery Nassau New York (Manhattan) Orange Otsego Putnam Queens Rensselaer Richmond (Staten Island) Rockland Saratoga Schenectady Schoharie Suffolk Sullivan Ulster Warren Washington Westchester. If the city or location is specified in the prompt, ignore the counties and just use that."
                                 },
                                 "state": {
                                     "type": "string",

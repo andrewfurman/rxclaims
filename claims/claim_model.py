@@ -10,7 +10,10 @@ class Claim(db.Model):
     claim_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     
     # Foreign Key to Member
-    member_id = db.Column(db.Integer, db.ForeignKey('members.database_id'), nullable=False)
+    # Update the Foreign Key to include cascade delete
+    member_id = db.Column(db.Integer, 
+                         db.ForeignKey('members.database_id', ondelete='CASCADE'), 
+                         nullable=False)
     
     # Service Provider Information
     service_provider_id_qualifier = db.Column(db.TEXT, nullable=True)
@@ -59,9 +62,6 @@ class Claim(db.Model):
     # Timestamps
     created_at = db.Column(db.DateTime(timezone=True), nullable=False, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime(timezone=True), nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
-    
-    # Relationship
-    member = db.relationship('Member', backref='claims')
     
     def __repr__(self):
         return f'<Claim {self.claim_id}: Member {self.member_id}>'
