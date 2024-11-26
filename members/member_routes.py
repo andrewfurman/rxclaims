@@ -59,3 +59,15 @@ def export_members_route():
                 os.rmdir(os.path.dirname(filepath))
             except Exception as e:
                 print(f"Error cleaning up file: {str(e)}")
+
+@members_bp.route('/members/search', methods=['GET'])
+def search_members_route():
+    search_string = request.args.get('q', '')
+    if not search_string:
+        return jsonify({'error': 'No search string provided'}), 400
+
+    try:
+        results = search_member(search_string)
+        return jsonify(results)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
