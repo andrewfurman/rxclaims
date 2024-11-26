@@ -44,15 +44,15 @@ def create_member_gpt(prompt):
                                 },
                                 "first_name": {
                                     "type": "string",
-                                    "description": "Member's legal first name. If no name is given in the prompt, use a common name, but do not use the most common names like John Jane Liam Clara Lucas unless specified in the prompt."
+                                    "description": "Member's legal first name. If no name is given in the prompt, use a common name, but do not use the most common names like John Jane Liam Clara Lucas unless specified in the prompt. If the prompt expicitely requests a common name, please use that name provided in the prompt"
                                 },
                                 "last_name": {
                                     "type": "string",
-                                    "description": "Member's legal last name. Do not use the most common names like Smith or Jones unless requested in the prompt."
+                                    "description": "Member's legal last name. Do not use the most common names like Smith or Jones unless requested in the prompt. If the prompt expicitely requests a name like Smith, , please use that name provided in the prompt"
                                 },
                                 "date_of_birth": {
                                     "type": "string",
-                                    "description": "Member's date of birth in YYYY-MM-DD format. Pick a random date in the year, not use january 1st unless specified in the prompt"
+                                    "description": "Member's date of birth in YYYY-MM-DD format. Pick a random date in the year, not use january 1st unless specified in the prompt, If the prompt expicitely requests a January 1st birthday, please use that birthday provided in the prompt"
                                 },
                                 "gender": {
                                     "type": "string",

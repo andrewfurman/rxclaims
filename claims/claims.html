@@ -80,12 +80,20 @@
                         <th class="py-2 px-4 text-left whitespace-nowrap">Updated At</th>
                     </tr>
                 </thead>
+
+                <!-- Claims Table Body  -->
                 <tbody>
                     {% for claim in claims %}
                     <tr class="border-t hover:bg-gray-50">
                         <td class="py-2 px-4 whitespace-nowrap">{{ claim.claim_id }}</td>
-                        <td class="py-2 px-4 whitespace-nowrap">{{ claim.member_id }}</td>
+                        <td class="py-2 px-4 whitespace-nowrap">
+                            <a href="{{ url_for('members.view_member', member_id=claim.member.member_id) }}" 
+                               class="text-blue-600 hover:text-blue-800 hover:underline">
+                                {{ claim.member.member_id }}
+                            </a>
+                        </td>
                         <td class="py-2 px-4 whitespace-nowrap">{{ claim.member.first_name }} {{ claim.member.last_name }}</td>
+                        <!-- Rest of the columns remain unchanged -->
                         <td class="py-2 px-4 whitespace-nowrap">{{ claim.service_provider_id }}</td>
                         <td class="py-2 px-4 whitespace-nowrap">{{ claim.service_provider_id_qualifier }}</td>
                         <td class="py-2 px-4 whitespace-nowrap">{{ claim.ndc_number }}</td>
