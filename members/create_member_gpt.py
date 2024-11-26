@@ -44,15 +44,15 @@ def create_member_gpt(prompt):
                                 },
                                 "first_name": {
                                     "type": "string",
-                                    "description": "Member's legal first name. If no name is given in the prompt, use a common name, but do not use the most common names like John or Jane Smith"
+                                    "description": "Member's legal first name. If no name is given in the prompt, use a common name, but do not use the most common names like John or Jane unless specified in the prompt."
                                 },
                                 "last_name": {
                                     "type": "string",
-                                    "description": "Member's legal last name"
+                                    "description": "Member's legal last name. Do not use the most common names like Smith or Jones unless requested in the prompt."
                                 },
                                 "date_of_birth": {
                                     "type": "string",
-                                    "description": "Member's date of birth in YYYY-MM-DD format"
+                                    "description": "Member's date of birth in YYYY-MM-DD format. Pick a random date in the year, not use january 1st unless specified in the prompt"
                                 },
                                 "gender": {
                                     "type": "string",
@@ -60,11 +60,11 @@ def create_member_gpt(prompt):
                                 },
                                 "address": {
                                     "type": "string",
-                                    "description": "Member's street address"
+                                    "description": "Member's street address. make this line look like a real street in the city selected, not 123 Main St. Make sure to select random street number, not sequential numbers like 456, 9876 or 1234"
                                 },
                                 "city": {
                                     "type": "string",
-                                    "description": "City of member's residence"
+                                    "description": "City of member's residence. Make sure that the city is in one of these counties unless specified otherwise in the prompt: Albany Bronx Broome Columbia Delaware Dutchess Fulton Greene Kings (Brooklyn) Montgomery Nassau New York (Manhattan) Orange Otsego Putnam Queens Rensselaer Richmond (Staten Island) Rockland Saratoga Schenectady Schoharie Suffolk Sullivan Ulster Warren Washington Westchester"
                                 },
                                 "state": {
                                     "type": "string",
@@ -80,39 +80,39 @@ def create_member_gpt(prompt):
                                 },
                                 "insurance_id_number": {
                                     "type": "string",
-                                    "description": "Primary insurance identification number"
+                                    "description": "Primary insurance identification number. Use for Emblem Health unless otherwise specified. Example: 'EMBLEM-24358157' "
                                 },
                                 "group_number": {
                                     "type": "string",
-                                    "description": "Insurance group number identifying the benefit plan"
+                                    "description": "Insurance group number identifying the benefit plan. NYC-29262"
                                 },
                                 "rx_bin": {
                                     "type": "string",
-                                    "description": "Pharmacy benefit BIN (Bank Identification Number)"
+                                    "description": "Pharmacy benefit BIN (Bank Identification Number). For EmblemHealth's HIP Commercial plans, the BIN is 004336."
                                 },
                                 "rx_group": {
                                     "type": "string",
-                                    "description": "Pharmacy benefit group identifier"
+                                    "description": "Pharmacy benefit group identifier. Example: EMBHLTH unless otherwise specified."
                                 },
                                 "rx_pcn": {
                                     "type": "string",
-                                    "description": "Pharmacy benefit Processor Control Number"
+                                    "description": "Pharmacy benefit Processor Control Number. For EmblemHealth's HIP Commercial plans, the PCN is 'ADV' "
                                 },
                                 "copay_1_generic": {
                                     "type": "string",
-                                    "description": "Copay amount for generic medications (Tier 1)"
+                                    "description": "Copay amount for generic medications (Tier 1). Example: '$10'"
                                 },
                                 "copay_2_preferred": {
                                     "type": "string",
-                                    "description": "Copay amount for preferred brand medications (Tier 2)"
+                                    "description": "Copay amount for preferred brand medications (Tier 2) Example: '$30'"
                                 },
                                 "copay_3_non_preferred": {
                                     "type": "string",
-                                    "description": "Copay amount for non-preferred brand medications (Tier 3)"
+                                    "description": "Copay amount for non-preferred brand medications (Tier 3) Example: '$50'"
                                 },
                                 "copay_4_specialty": {
                                     "type": "string",
-                                    "description": "Copay amount for specialty medications (Tier 4)"
+                                    "description": "Copay amount for specialty medications (Tier 4).  Example: '$100'"
                                 }
                             },
                             "required": [
@@ -141,9 +141,7 @@ def create_member_gpt(prompt):
     return member_data
 
 if __name__ == "__main__":
-    test_prompt = """Create a member profile for John Smith. He was born on 1980-01-01, 
-    lives at 123 Main St, Boston MA 02108, and has phone number 617-555-1234. 
-    His insurance ID is ABC123456."""
+    test_prompt = """Create a member profile for a random person."""
 
     result = create_member_gpt(test_prompt)
     print("Created member:", json.dumps(result, indent=2))
