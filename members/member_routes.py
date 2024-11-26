@@ -1,7 +1,14 @@
-from flask import Blueprint, render_template, request, jsonify
-from .create_member_gpt import create_member_gpt
+import os
+
+from flask import Blueprint, render_template, request, jsonify, send_file, Blueprint
+
+# Database Imports
 from .member_model import Member
 from sqlalchemy import desc
+
+# Function Imports
+from .create_member_gpt import create_member_gpt
+from .export_members import export_members
 
 members_bp = Blueprint('members', __name__, template_folder='.')
 
@@ -23,3 +30,32 @@ def create_member_with_gpt():
         return jsonify(result)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+@members_bp.route('/members/export', methods=['GET'])
+def export_members_route():
+    filepath = None
+    try:
+        filepath = export_members()
+        
+        if not filepath or not os.path.exists(filepath):
+            return jsonify({'error': 'Export failed - File not created'}), 500
+            
+        return send_file(
+            filepath,
+            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            as_attachment=True,
+            download_name='members_export.xlsx'
+        )
+        
+    except Exception as e:
+        print(f"Error in export_members_route: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+        
+    finally:
+        # Clean up temporary file
+        if filepath and os.path.exists(filepath):
+            try:
+                os.remove(filepath)
+                os.rmdir(os.path.dirname(filepath))
+            except Exception as e:
+                print(f"Error cleaning up file: {str(e)}")
