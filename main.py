@@ -53,12 +53,25 @@ class RetryMiddleware:
 # Apply middleware
 app.wsgi_app = RetryMiddleware(app.wsgi_app)
 
+# Add this decorator function before your route definitions
+def route_retry():
+    return retry(
+        stop=stop_after_attempt(3),
+        wait=wait_exponential(multiplier=1, min=2, max=10),
+        retry=(
+            retry_if_exception_type(OperationalError) |
+            retry_if_exception_type(psycopg2.OperationalError)
+        )
+    )
+
 # Register blueprints
 app.register_blueprint(members_bp)
 app.register_blueprint(claims_bp)
 app.register_blueprint(ncpdp_bp)
 
+# Then modify your index route to use it
 @app.route('/')
+@route_retry()
 def index():
     return redirect('/members')
 
