@@ -145,16 +145,66 @@ def create_claim_gpt(member_database_id: int = None, prompt: str = None):
                             "prescriber_phone_number": {
                                 "type": "string",
                                 "description": "Prescriber's contact number. 10 digits, no formatting characters. Example: '8005551234'"
-                            }
+                            },
+                          "other_payer_id_qualifier": {
+                            "type": "string",
+                            "description": "Code indicating the type of identifier used for the other payer. For example, '03' denotes a Bank Identification Number (BIN). Example: '03'"
+                          },
+                          "other_payer_id": {
+                            "type": "string",
+                            "description": "Identifier assigned by the other payer. For instance, Express Scripts' BIN might be '003858'. Example: '003858'"
+                          },
+                          "other_payer_amount_paid": {
+                            "type": "number",
+                            "description": "The dollar amount paid by the other payer for the claim. Example: 50.00"
+                          },
+                          "prescription_service_reference_number_qualifier": {
+                            "type": "string",
+                            "description": "Code indicating the type of reference number for the prescription service. '1' typically represents the prescription number assigned by the pharmacy. Example: '1'"
+                          },
+                          "product_service_id_qualifier": {
+                            "type": "string",
+                            "description": "Code specifying the type of product or service identifier. '03' corresponds to the National Drug Code (NDC). Example: '03'"
+                          },
+                          "other_coverage_code": {
+                            "type": "string",
+                            "description": "Code indicating the existence and type of other coverage. '1' signifies no other coverage. Example: '1'"
+                          },
+                          "special_packaging_indicator": {
+                            "type": "boolean",
+                            "description": "Indicates whether special packaging was used for the medication. 'false' means no special packaging. Example: false"
+                          },
+                          "unit_of_measure": {
+                            "type": "string",
+                            "description": "Unit of measure for the quantity dispensed. 'EA' stands for each unit. Example: 'EA'"
+                          },
+                          "usual_and_customary_charge": {
+                            "type": "number",
+                            "description": "The pharmacy's usual and customary charge to the general public for the prescription. Example: 125.99"
+                          },
+                          "gross_amount_due": {
+                            "type": "number",
+                            "description": "Total amount due from all payers and the patient, before any adjustments. Example: 135.99"
+                          },
+                          "basis_of_cost_determination": {
+                            "type": "string",
+                            "description": "Code indicating the method used to determine the cost of the product or service. '01' represents the Average Wholesale Price (AWP). Example: '01'"
+                          }
+
                         },
                         "required": [
                             "member_id",
                             "service_provider_id_qualifier",
                             "service_provider_id",
+                            "other_payer_id_qualifier",
+                            "other_payer_id",
+                            "other_payer_amount_paid",
                             "diagnosis_code_qualifier",
                             "diagnosis_code",
                             "clinical_information",
+                            "prescription_service_reference_number_qualifier",
                             "prescription_service_reference_number",
+                            "product_service_id_qualifier",
                             "product_service_id",
                             "quantity_dispensed",
                             "fill_number",
@@ -163,9 +213,15 @@ def create_claim_gpt(member_database_id: int = None, prompt: str = None):
                             "dispense_as_written",
                             "date_prescription_written",
                             "prescription_origin_code",
+                            "other_coverage_code",
+                            "special_packaging_indicator",
+                            "unit_of_measure",
                             "ingredient_cost_submitted",
                             "dispensing_fee_submitted",
                             "patient_paid_amount_submitted",
+                            "usual_and_customary_charge",
+                            "gross_amount_due",
+                            "basis_of_cost_determination",
                             "prescriber_id_qualifier",
                             "prescriber_id",
                             "prescriber_last_name",
