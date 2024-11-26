@@ -3,7 +3,7 @@ import os
 from flask import Blueprint, render_template, request, jsonify, send_file, Blueprint
 
 # Database Imports
-from .member_model import Member
+from .member_model import Member, db
 from sqlalchemy import desc
 
 # Function Imports
@@ -70,4 +70,15 @@ def search_members_route():
         results = search_member(search_string)
         return jsonify(results)
     except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@members_bp.route('/members/<member_id>/delete', methods=['DELETE'])
+def delete_member(member_id):
+    try:
+        member = Member.query.filter_by(member_id=member_id).first_or_404()
+        db.session.delete(member)
+        db.session.commit()
+        return jsonify({'message': 'Member deleted successfully'}), 200
+    except Exception as e:
+        db.session.rollback()
         return jsonify({'error': str(e)}), 500

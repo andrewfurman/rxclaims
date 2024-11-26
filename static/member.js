@@ -72,3 +72,35 @@ function exportMembers() {
     button.innerHTML = '📥 Export'; // Fixed text to match HTML
   });
 }
+
+function deleteMember(memberId) {
+  if (!confirm('Are you sure you want to delete this member?')) {
+    return;
+  }
+
+  const button = event.target;
+  button.disabled = true;
+  button.innerHTML = `
+    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+    </svg>
+    Deleting...
+  `;
+
+  fetch(`/members/${memberId}/delete`, {
+    method: 'DELETE',
+  })
+  .then(response => {
+    if (response.ok) {
+      window.location.href = '/members';
+    } else {
+      throw new Error('Failed to delete member');
+    }
+  })
+  .catch(error => {
+    alert('Error deleting member');
+    button.disabled = false;
+    button.innerHTML = '🗑️ Delete Member';
+  });
+}
