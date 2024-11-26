@@ -136,7 +136,7 @@ def create_claim_gpt(member_database_id: int = None, prompt: str = None):
                             },
                             "prescriber_id": {
                                 "type": "string",
-                                "description": "Prescriber's ID matching qualifier type. NPI must be 10 digits, DEA must be 9 characters. Example NPI: '1234567890'"
+                                "description": "Prescriber's ID matching qualifier type. NPI must be 10 digits, DEA must be 9 characters. Do not use sequential numbering like 123456789 or 987654321 Example NPI: '2958205828'"
                             },
                             "prescriber_last_name": {
                                 "type": "string",
@@ -144,7 +144,7 @@ def create_claim_gpt(member_database_id: int = None, prompt: str = None):
                             },
                             "prescriber_phone_number": {
                                 "type": "string",
-                                "description": "Prescriber's contact number. 10 digits, no formatting characters. Example: '8005551234'"
+                                "description": "Prescriber's contact number. 10 digits, no formatting characters. Do not use sequential numbering like 1234567 Example: '8003250395'"
                             },
                           "other_payer_id_qualifier": {
                             "type": "string",
