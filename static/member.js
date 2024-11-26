@@ -57,18 +57,18 @@ function exportMembers() {
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `members_export.xlsx`;
+    a.download = 'members_export.xlsx';
     document.body.appendChild(a);
     a.click();
     window.URL.revokeObjectURL(url);
     
-    // Reset button
+    // Reset button - Fixed text to match HTML
     button.disabled = false;
-    button.innerHTML = '📥 Export Members';
+    button.innerHTML = '📥 Export';
   })
   .catch(error => {
     alert('Error exporting members');
     button.disabled = false;
-    button.innerHTML = '📥 Export Members';
+    button.innerHTML = '📥 Export'; // Fixed text to match HTML
   });
 }
