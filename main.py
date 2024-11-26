@@ -3,6 +3,7 @@ from flask import Flask, redirect
 from members.member_model import db
 from members.member_routes import members_bp
 from claims.claim_routes import claims_bp
+from ncpdp.ncpdp_routes import ncpdp_bp
 
 app = Flask(__name__, template_folder='.')
 
@@ -13,6 +14,7 @@ db.init_app(app)
 # Register blueprints
 app.register_blueprint(members_bp)
 app.register_blueprint(claims_bp)
+app.register_blueprint(ncpdp_bp)
 
 @app.route('/')
 def index():
