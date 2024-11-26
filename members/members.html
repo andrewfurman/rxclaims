@@ -2,9 +2,26 @@
 
 <div class="mx-5 mt-20">
     <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-        <div class="p-4">
-            <h2 class="text-2xl font-bold mb-4">🪪 Members</h2>
-        </div>
+        <div class="px-5 py-4">
+          <!-- Header row with flex layout -->
+          <div class="flex items-center space-x-4">
+            <h1 class="text-2xl font-bold">👥 Members</h1>
+
+            <input 
+              type="text" 
+              id="gptPrompt"
+              placeholder="Enter prompt for member creation..."
+              class="flex-1 px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            >
+
+            <button 
+              onclick="createMemberGPT()"
+              id="createGPTButton"
+              class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+            >
+              Create Member GPT
+            </button>
+          </div>
         <table class="min-w-full">
             <thead class="bg-purple-900 text-white">
                 <tr>
@@ -54,3 +71,41 @@
         </table>
     </div>
 </div>
+
+<script>
+function createMemberGPT() {
+  const button = document.getElementById('createGPTButton');
+  const prompt = document.getElementById('gptPrompt').value;
+
+  // Disable button and show loading state
+  button.disabled = true;
+  button.innerHTML = `
+    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+    </svg>
+    Processing...
+  `;
+  // Make API call
+  fetch('/members/create-gpt', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ prompt: prompt })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.error) {
+      alert(data.error);
+    }
+    // Refresh the page
+    window.location.reload();
+  })
+  .catch(error => {
+    alert('Error creating member');
+    button.disabled = false;
+    button.innerHTML = 'Create Member GPT';
+  });
+}
+</script>

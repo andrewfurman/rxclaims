@@ -5,7 +5,7 @@ import json
 from openai import OpenAI
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from member_model import db, Member
+from .member_model import Member
 
 # Create database engine and session
 engine = create_engine(os.getenv("DATABASE_URL"))
