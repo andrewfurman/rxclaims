@@ -1,8 +1,8 @@
 {% include 'templates/header.html' %}
 
-<div class="mx-5 mt-20">
-    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-        <div class="px-2 py-2">
+<div class="mx-5 mt-20 mb-0">
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden mb-0">
+        <div class="px-2 pb-0 pt-1">
           <!-- Header row with flex layout -->
           <div class="flex items-center space-x-4 px-2 py-2">
             <h1 class="text-2xl font-bold">🪪 Members</h1>
@@ -19,7 +19,7 @@
               id="createGPTButton"
               class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
             >
-              Create Member GPT
+              ✨ Create Member
             </button>
             <button 
                 onclick="exportMembers()"
@@ -29,54 +29,57 @@
                 📥 Export Members
             </button>
           </div>
-        <table class="min-w-full">
-            <thead class="bg-purple-900 text-white">
-                <tr>
-                    <th class="py-2 px-4 text-left">Member ID</th>
-                    <th class="py-2 px-4 text-left">Name</th>
-                    <th class="py-2 px-4 text-left">DOB</th>
-                    <th class="py-2 px-4 text-left">Member Phone & Address</th>
-                    <th class="py-2 px-4 text-left">Insurance</th>
-                    <th class="py-2 px-4 text-left">Pharmacy Benefits</th>
-                    <th class="py-2 px-4 text-left">Copays</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                {% for member in members %}
-                <tr class="border-t">
-                    <td class="py-2 px-4">
-                        <a href="{{ url_for('members.view_member', member_id=member.member_id) }}" class="text-purple-900 hover:text-purple-700">
-                            {{ member.member_id }}
-                        </a>
-                    </td>
-                    <td class="py-2 px-4">
-                        {{ member.first_name }} {{ member.last_name }}<br>
-                    </td>
-                    <td class="py-2 px-4">{{ member.date_of_birth }}</td>
-                    <td class="py-2 px-4">
-                        {{ member.phone_number }}<br>
-                        {{ member.address }}<br>
-                        {{ member.city }}, {{ member.state }} {{ member.zip_code }}
-                    </td>
-                    <td class="py-2 px-4">
-                        ID: {{ member.insurance_id_number }}<br>
-                        Group: {{ member.group_number }}
-                    </td>
-                    <td class="py-2 px-4">
-                        BIN: {{ member.rx_bin }}<br>
-                        PCN: {{ member.rx_pcn }}<br>
-                        Group: {{ member.rx_group }}
-                    </td>
-                    <td class="py-2 px-4">
-                        Generic: {{ member.copay_1_generic }}<br>
-                        Preferred: {{ member.copay_2_preferred }}<br>
-                        Non-Preferred: {{ member.copay_3_non_preferred }}<br>
-                        Specialty: {{ member.copay_4_specialty }}
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
+            
+        <!-- Member Table  -->
+        <div class="max-h-[85vh] overflow-y-auto mb-0 pb-0">
+            <table class="min-w-full mb-0">
+                <thead class="bg-purple-900 text-white sticky top-0">
+                    <tr>
+                        <th class="py-2 px-4 text-left">Member ID</th>
+                        <th class="py-2 px-4 text-left">Name</th>
+                        <th class="py-2 px-4 text-left">DOB</th>
+                        <th class="py-2 px-4 text-left">Member Phone & Address</th>
+                        <th class="py-2 px-4 text-left">Insurance</th>
+                        <th class="py-2 px-4 text-left">Pharmacy Benefits</th>
+                        <th class="py-2 px-4 text-left">Copays</th>
+                    </tr>
+                </thead>
+    
+                <tbody>
+                    {% for member in members %}
+                    <tr class="border-t">
+                        <td class="py-2 px-4">
+                            <a href="{{ url_for('members.view_member', member_id=member.member_id) }}" class="text-purple-900 hover:text-purple-700">
+                                {{ member.member_id }}
+                            </a>
+                        </td>
+                        <td class="py-2 px-4">
+                            {{ member.first_name }} {{ member.last_name }}<br>
+                        </td>
+                        <td class="py-2 px-4">{{ member.date_of_birth }}</td>
+                        <td class="py-2 px-4">
+                            {{ member.phone_number }}<br>
+                            {{ member.address }}<br>
+                            {{ member.city }}, {{ member.state }} {{ member.zip_code }}
+                        </td>
+                        <td class="py-2 px-4">
+                            ID: {{ member.insurance_id_number }}<br>
+                            Group: {{ member.group_number }}
+                        </td>
+                        <td class="py-2 px-4">
+                            BIN: {{ member.rx_bin }}<br>
+                            PCN: {{ member.rx_pcn }}<br>
+                            Group: {{ member.rx_group }}
+                        </td>
+                        <td class="py-2 px-4">
+                            Generic: {{ member.copay_1_generic }}<br>
+                            Preferred: {{ member.copay_2_preferred }}<br>
+                            Non-Preferred: {{ member.copay_3_non_preferred }}<br>
+                            Specialty: {{ member.copay_4_specialty }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
             
         </table>
     </div>

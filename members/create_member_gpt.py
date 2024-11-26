@@ -44,7 +44,7 @@ def create_member_gpt(prompt):
                                 },
                                 "first_name": {
                                     "type": "string",
-                                    "description": "Member's legal first name. If no name is given in the prompt, use a common name, but do not use the most common names like John or Jane unless specified in the prompt."
+                                    "description": "Member's legal first name. If no name is given in the prompt, use a common name, but do not use the most common names like John Jane Liam Clara Lucas unless specified in the prompt."
                                 },
                                 "last_name": {
                                     "type": "string",
