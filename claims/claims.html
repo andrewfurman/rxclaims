@@ -3,7 +3,23 @@
 <div class="mx-5 mt-20 mb-0">
     <div class="bg-white shadow-lg rounded-lg overflow-hidden mb-0">
         <div class="px-2 pb-0 pt-1">
-            <h2 class="text-2xl font-bold px-2 py-2">💊 Pharmacy Claims</h2>
+            <!-- Header row with flex layout -->
+            <div class="flex items-center space-x-4 px-2 py-2">
+                <h1 class="text-2xl font-bold">💊 Pharmacy Claims</h1>
+                <input 
+                    type="text" 
+                    id="gptPrompt"
+                    placeholder="Enter prompt for claim creation..."
+                    class="flex-1 px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+                <button 
+                    onclick="createClaimGPT()"
+                    id="createGPTButton"
+                    class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+                >
+                    ✨ Create
+                </button>
+            </div>
         </div>
         
         <!-- Added wrapper div for scrolling -->
@@ -38,4 +54,5 @@
             </table>
         </div>
     </div>
+    <script defer src="{{ url_for('static', filename='claim.js') }}"></script>
 </div>

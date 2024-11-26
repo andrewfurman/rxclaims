@@ -7,6 +7,7 @@ from openai import OpenAI
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime
+from members.get_member import get_member
 
 # Add root directory to Python path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -21,7 +22,17 @@ session = Session()
 
 client = OpenAI(api_key=os.environ['OPENAI_API_KEY'])
 
-def create_claim_gpt(member_database_id: int, prompt: str):
+def create_claim_gpt(member_database_id: int = None, prompt: str = None):
+    # Set default empty prompt if none provided
+    prompt = prompt or ""
+
+    # Get member data using existing get_member function
+    member_data = get_member(member_database_id)
+    if "error" in member_data:
+        raise ValueError(f"Error getting member data: {member_data['error']}")
+
+    member_database_id = member_data['database_id']
+
     payload = {
     "model": "gpt-4o-mini",
     "messages": [
@@ -31,7 +42,9 @@ def create_claim_gpt(member_database_id: int, prompt: str):
         },
         {
             "role": "user",
-            "content": prompt
+            "content": f"""Create the data for a claim that adheres to the requirements in this prompt: {prompt}
+        Make sure the claim you're creating makes sense for the person listed below based on their demographics and insurance information:
+        {member_data}"""
         }
     ],
     "response_format": {
@@ -173,11 +186,6 @@ def create_claim_gpt(member_database_id: int, prompt: str):
     
     # Ensure member_id is set to the provided database_id
     claim_data['member_id'] = member_database_id
-    
-    # Convert date string to date object if present
-    # if 'date_prescription_written' in claim_data:
-    #     claim_data['date_prescription_written'] = datetime.strptime(
-    #         claim_data['date_prescription_written'], '%Y-%m-%d').date()
 
     new_claim = Claim(**claim_data)
     session.add(new_claim)
