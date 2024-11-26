@@ -9,6 +9,7 @@ from sqlalchemy import desc
 # Function Imports
 from .create_member_gpt import create_member_gpt
 from .export_members import export_members
+from .search_member import search_member
 
 members_bp = Blueprint('members', __name__, template_folder='.')
 

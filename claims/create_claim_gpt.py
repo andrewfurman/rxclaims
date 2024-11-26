@@ -140,7 +140,7 @@ def create_claim_gpt(member_database_id: int = None, prompt: str = None):
                             },
                             "prescriber_last_name": {
                                 "type": "string",
-                                "description": "Prescriber's last name exactly as registered with their NPI/DEA. Maximum 35 characters. Do not use extremely common names such as Johnson, Smith, Jones, unless specified in the prompt Example: 'Lombardi'"
+                                "description": "Prescriber's last name exactly as registered with their NPI/DEA. Maximum 35 characters. Do NOT use common last names such as Johnson, Smith, Jones, unless specified in the prompt, generate a unique last name unless specified in the prompt. Example: 'Lombardi'"
                             },
                             "prescriber_phone_number": {
                                 "type": "string",

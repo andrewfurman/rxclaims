@@ -1,3 +1,12 @@
+// Remove the duplicate event listeners and consolidate into one at the bottom of the file
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize search functionality
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) {  // Add null check
+    searchInput.addEventListener('input', debounce(performSearch, 300));
+  }
+});
+
 function createMemberGPT() {
   const button = document.getElementById('createGPTButton');
   const prompt = document.getElementById('gptPrompt').value;
@@ -104,3 +113,71 @@ function deleteMember(memberId) {
     button.innerHTML = '🗑️ Delete Member';
   });
 }
+
+function toggleSearch() {
+  const overlay = document.getElementById('searchOverlay');
+  overlay.classList.toggle('hidden');
+  if (!overlay.classList.contains('hidden')) {
+    document.getElementById('searchInput').focus();
+  }
+}
+
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
+function performSearch() {
+  const searchInput = document.getElementById('searchInput');
+  const searchResults = document.getElementById('searchResults');
+  const searchTerm = searchInput.value.trim();
+
+  if (searchTerm === '') {
+    searchResults.innerHTML = '';
+    return;
+  }
+
+  fetch(`/members/search?q=${encodeURIComponent(searchTerm)}`)
+    .then(response => response.json())
+    .then(data => {
+      if (data.error) {
+        searchResults.innerHTML = `<p class="text-red-500">Error: ${data.error}</p>`;
+        return;
+      }
+
+      if (data.length === 0) {
+        searchResults.innerHTML = '<p class="text-gray-500">No results found</p>';
+        return;
+      }
+
+      const resultsHtml = data.map(member => `
+        <div class="p-4 border rounded-lg hover:bg-gray-50">
+          <a href="/members/${member.member_id}" class="block">
+            <p class="font-bold">${member.first_name} ${member.last_name}</p>
+            <p class="text-sm text-gray-600">
+              ID: ${member.member_id} | DOB: ${member.date_of_birth || 'N/A'}<br>
+              ${member.city}, ${member.state} | Group: ${member.group_number}
+            </p>
+          </a>
+        </div>
+      `).join('');
+
+      searchResults.innerHTML = resultsHtml;
+    })
+    .catch(error => {
+      searchResults.innerHTML = '<p class="text-red-500">Error performing search</p>';
+    });
+}
+
+// Add event listener when the page loads
+document.addEventListener('DOMContentLoaded', function() {
+  const searchInput = document.getElementById('searchInput');
+  searchInput.addEventListener('input', debounce(performSearch, 300));
+});
