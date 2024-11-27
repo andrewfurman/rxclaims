@@ -5,12 +5,12 @@ import json
 from openai import OpenAI
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from .member_model import Member
+from .member_model import Member, db
 
 # Create database engine and session
-engine = create_engine(os.getenv("DATABASE_URL"))
-Session = sessionmaker(bind=engine)
-session = Session()
+# engine = create_engine(os.getenv("DATABASE_URL"))
+# Session = sessionmaker(bind=engine)
+# session = Session()
 
 client = OpenAI(api_key=os.environ['OPENAI_API_KEY'])
 
@@ -48,7 +48,7 @@ def create_member_gpt(prompt):
                                 },
                                 "last_name": {
                                     "type": "string",
-                                    "description": "Member's legal last name. Do not use the most common names like Smith or Jones unless requested in the prompt. If the prompt expicitely requests a name like Smith, , please use that name provided in the prompt"
+                                    "description": "Member's legal last name. Do not use the most common names like Smith or Jones unless requested in the prompt. If the prompt expicitely requests a name like Smith, please use that name provided in the prompt"
                                 },
                                 "date_of_birth": {
                                     "type": "string",
@@ -135,9 +135,10 @@ def create_member_gpt(prompt):
     response = client.chat.completions.create(**payload)
     member_data = json.loads(response.choices[0].message.content)['member_profile']
   
+    # Use the global db instance
     new_member = Member(**member_data)
-    session.add(new_member)
-    session.commit()
+    db.session.add(new_member)
+    db.session.commit()
     return member_data
 
 if __name__ == "__main__":

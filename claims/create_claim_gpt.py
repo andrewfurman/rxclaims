@@ -4,8 +4,8 @@
 
 import os, sys, json
 from openai import OpenAI
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+# from sqlalchemy import create_engine
+# from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 from members.get_member import get_member
 
@@ -16,9 +16,9 @@ from claims.claim_model import db, Claim
 from members.member_model import Member
 
 # Create database engine and session
-engine = create_engine(os.getenv("DATABASE_URL"))
-Session = sessionmaker(bind=engine)
-session = Session()
+# engine = create_engine(os.getenv("DATABASE_URL"))
+# Session = sessionmaker(bind=engine)
+# session = Session()
 
 client = OpenAI(api_key=os.environ['OPENAI_API_KEY'])
 
@@ -244,8 +244,8 @@ def create_claim_gpt(member_database_id: int = None, prompt: str = None):
     claim_data['member_id'] = member_database_id
 
     new_claim = Claim(**claim_data)
-    session.add(new_claim)
-    session.commit()
+    db.session.add(new_claim)
+    db.session.commit()
     return claim_data
 
 if __name__ == "__main__":
