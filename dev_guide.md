@@ -1,3 +1,8 @@
+Todo List: 
+Make logout work
+Make protect all routes
+add user fields
+
 # 🚀 RxClaims Development Guide
 
 ## 📋 Overview
