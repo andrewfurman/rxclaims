@@ -1,5 +1,6 @@
 import os, psycopg2
-from flask import Flask, redirect
+from auth_config import oauth, auth0, requires_auth
+from flask import Flask, redirect, url_for, session
 from members.member_model import db
 from members.member_routes import members_bp
 from claims.claim_routes import claims_bp
@@ -11,9 +12,41 @@ from sqlalchemy.exc import OperationalError
 
 
 app = Flask(__name__, template_folder='.')
-# Configure database
+# Configure database and secret key
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
+app.secret_key = os.getenv("AUTH0_CLIENT_SECRET")  # Required for Auth0 sessions
+# Initialize extensions
 db.init_app(app)
+oauth.init_app(app)  # Initialize OAuth with app
+
+# Near the top of main.py, after app creation
+app.config['SESSION_TYPE'] = 'filesystem'
+app.config['SESSION_COOKIE_SECURE'] = True
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+
+# Auth routes
+
+@app.route('/login')
+def login():
+    callback_url = url_for('callback', _external=True, _scheme='https')
+    print(f"Callback URL being used: {callback_url}")
+    # Generate and store state parameter
+    return auth0.authorize_redirect(
+        redirect_uri=callback_url,
+        audience=f'https://{os.getenv("AUTH0_DOMAIN")}/userinfo'  # Add this line
+    )
+
+@app.route('/callback')
+def callback():
+    try:
+        token = auth0.authorize_access_token()
+        resp = auth0.get('userinfo')
+        userinfo = resp.json()
+        session['user'] = userinfo
+        return redirect('/')
+    except Exception as e:
+        print(f"Auth error: {str(e)}")
+        return redirect('/login')
 
 def retry_database_operation():
     def decorator(f):
