@@ -1,6 +1,6 @@
 import os, psycopg2
 from auth_config import oauth, auth0, requires_auth
-from flask import Flask, redirect, url_for, session
+from flask import Flask, redirect, url_for, session, request, render_template
 from members.member_model import db
 from members.member_routes import members_bp
 from claims.claim_routes import claims_bp
@@ -35,6 +35,24 @@ def login():
         redirect_uri=callback_url,
         audience=f'https://{os.getenv("AUTH0_DOMAIN")}/userinfo'  # Add this line
     )
+
+@app.route('/logout')
+def logout():
+    # Clear the session
+    session.clear()
+    # Generate the return URL based on the current request host
+    return_to_url = f"{request.scheme}://{request.host}/auth/logout"
+    # Redirect to Auth0 logout endpoint
+    auth0_logout_url = (f"https://{os.getenv('AUTH0_DOMAIN')}/v2/logout"
+                        f"?client_id={os.getenv('AUTH0_CLIENT_ID')}&returnTo={return_to_url}")
+    # Redirect to Auth0 logout
+    return redirect(auth0_logout_url)
+
+@app.route('/auth/logout', methods=['GET'])
+def logout_page():
+    # Clear the session
+    session.clear()
+    return render_template('auth/logout.html')  # Render the logout.html template
 
 @app.route('/callback')
 def callback():
