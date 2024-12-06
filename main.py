@@ -4,14 +4,16 @@ from functools import wraps
 from flask import Flask, redirect, url_for, session, request, render_template
 from datetime import datetime
 
-# Models
+# 💿 Models
 from members.member_model import db
 from auth.users_model import User
 from claims.claim_model import Claim
 
+# 🛣️ Routes 
 from members.member_routes import members_bp
 from claims.claim_routes import claims_bp
 from ncpdp.ncpdp_routes import ncpdp_bp
+from auth.auth_routes import auth_bp
 
 # Database
 from flask_migrate import Migrate
@@ -158,6 +160,8 @@ def route_retry():
 app.register_blueprint(members_bp)
 app.register_blueprint(claims_bp)
 app.register_blueprint(ncpdp_bp)
+app.register_blueprint(auth_bp)
+
 
 # Then modify your index route to use it
 @app.route('/')
