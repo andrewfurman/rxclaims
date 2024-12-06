@@ -7,11 +7,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from .member_model import Member, db
 
-# Create database engine and session
-# engine = create_engine(os.getenv("DATABASE_URL"))
-# Session = sessionmaker(bind=engine)
-# session = Session()
-
 client = OpenAI(api_key=os.environ['OPENAI_API_KEY'])
 
 def create_member_gpt(prompt):

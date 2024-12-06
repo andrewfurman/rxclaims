@@ -4,8 +4,6 @@
 
 import os, sys, json
 from openai import OpenAI
-# from sqlalchemy import create_engine
-# from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 from members.get_member import get_member
 
@@ -14,11 +12,6 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # Now we can import from other directories
 from claims.claim_model import db, Claim
 from members.member_model import Member
-
-# Create database engine and session
-# engine = create_engine(os.getenv("DATABASE_URL"))
-# Session = sessionmaker(bind=engine)
-# session = Session()
 
 client = OpenAI(api_key=os.environ['OPENAI_API_KEY'])
 

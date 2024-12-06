@@ -392,6 +392,22 @@ async = ["asgiref (>=3.2)"]
 dotenv = ["python-dotenv"]
 
 [[package]]
+name = "flask-migrate"
+version = "4.0.7"
+description = "SQLAlchemy database migrations for Flask applications using Alembic."
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "Flask-Migrate-4.0.7.tar.gz", hash = "sha256:dff7dd25113c210b069af280ea713b883f3840c1e3455274745d7355778c8622"},
+    {file = "Flask_Migrate-4.0.7-py3-none-any.whl", hash = "sha256:5c532be17e7b43a223b7500d620edae33795df27c75811ddf32560f7d48ec617"},
+]
+
+[package.dependencies]
+alembic = ">=1.9.0"
+Flask = ">=0.9"
+Flask-SQLAlchemy = ">=1.0"
+
+[[package]]
 name = "flask-sqlalchemy"
 version = "3.1.1"
 description = "Add SQLAlchemy support to your Flask application."
@@ -1116,6 +1132,16 @@ python-versions = ">=3.6"
 files = [
     {file = "mergedeep-1.3.4-py3-none-any.whl", hash = "sha256:70775750742b25c0d8f36c55aed03d24c3384d17c951b3175d898bd778ef0307"},
     {file = "mergedeep-1.3.4.tar.gz", hash = "sha256:0096d52e9dad9939c3d975a774666af186eda617e6ca84df4c94dec30004f2a8"},
+]
+
+[[package]]
+name = "migrate"
+version = "0.3.8"
+description = "A simple language agnostic database migration tool"
+optional = false
+python-versions = "*"
+files = [
+    {file = "migrate-0.3.8.tar.gz", hash = "sha256:5cca9d963f75b65b97e3e13456cbeecb7012610b1d515ce254daeb5be9d4b7e7"},
 ]
 
 [[package]]
@@ -2132,4 +2158,4 @@ typeguard = "*"
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.11.0,<3.12"
-content-hash = "6681195d0f7a3570dbc6c023f607ebb86875675fbecee5f632bd460aec9f2218"
+content-hash = "d19806a1772aed3396c69f277af52f2ac3b84fd1e23c15894437efc903cde5cd"

@@ -1,12 +1,19 @@
 import os, psycopg2
 from auth_config import oauth, auth0, requires_auth
+from functools import wraps
 from flask import Flask, redirect, url_for, session, request, render_template
+
+# Models
 from members.member_model import db
+from auth.users_model import User
+from claims.claim_model import Claim
+
 from members.member_routes import members_bp
 from claims.claim_routes import claims_bp
 from ncpdp.ncpdp_routes import ncpdp_bp
 
-from functools import wraps
+# Database
+from flask_migrate import Migrate
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 from sqlalchemy.exc import OperationalError
 
@@ -14,10 +21,26 @@ from sqlalchemy.exc import OperationalError
 app = Flask(__name__, template_folder='.')
 # Configure database and secret key
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
+app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
+    'pool_size': 5,  # Reasonable pool size for most applications
+    'pool_timeout': 30,  # Seconds to wait before giving up on getting a connection
+    'pool_recycle': 1800,  # Recycle connections after 30 minutes
+    'max_overflow': 2,  # Allow up to 2 connections beyond pool_size
+    'pool_pre_ping': True,  # Enable connection health checks
+    'connect_args': {
+        'keepalives': 1,
+        'keepalives_idle': 30,
+        'keepalives_interval': 10,
+        'keepalives_count': 5,
+        'connect_timeout': 10
+    }
+}
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = os.getenv("AUTH0_CLIENT_SECRET")  # Required for Auth0 sessions
 # Initialize extensions
 db.init_app(app)
 oauth.init_app(app)  # Initialize OAuth with app
+migrate = Migrate(app, db)  # Add this line
 
 # Near the top of main.py, after app creation
 app.config['SESSION_TYPE'] = 'filesystem'
@@ -99,7 +122,17 @@ class RetryMiddleware:
     def __call__(self, environ, start_response):
         @retry_database_operation()
         def _retry_app(*args, **kwargs):
-            return self.app(environ, start_response)
+            try:
+                return self.app(environ, start_response)
+            except (OperationalError, psycopg2.OperationalError) as e:
+                # Log the error if you have logging configured
+                print(f"Database error occurred: {str(e)}")
+                db.session.remove()
+                # Return 503 Service Unavailable
+                status = '503 Service Unavailable'
+                response_headers = [('Content-type', 'text/plain')]
+                start_response(status, response_headers)
+                return [b'Database connection error. Please try again later.']
         return _retry_app()
 # Apply middleware
 app.wsgi_app = RetryMiddleware(app.wsgi_app)
@@ -125,6 +158,18 @@ app.register_blueprint(ncpdp_bp)
 @route_retry()
 def index():
     return redirect('/members')
+
+# Add a context processor to ensure database connections are properly managed
+@app.before_request
+def before_request():
+    if not hasattr(db.session, 'active'):
+        db.session.active = True
+
+@app.teardown_request
+def teardown_request(exception=None):
+    if hasattr(db.session, 'active'):
+        db.session.remove()
+        delattr(db.session, 'active')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
