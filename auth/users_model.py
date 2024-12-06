@@ -5,8 +5,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from sqlalchemy.dialects.postgresql import TEXT, JSONB
-
-db = SQLAlchemy()
+from members.member_model import db  # Import db from member_model
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -42,5 +41,43 @@ class User(db.Model):
     created_at = db.Column(db.DateTime(timezone=True), nullable=False, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime(timezone=True), nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
 
+    # Add a class method to create or update user
+    @classmethod
+    def create_or_update_from_auth0(cls, userinfo):
+        user = cls.query.filter_by(auth0_id=userinfo['sub']).first()
+        
+        if user:
+            # Update existing user
+            user.email = userinfo.get('email')
+            user.first_name = userinfo.get('given_name')
+            user.last_name = userinfo.get('family_name')
+            user.nickname = userinfo.get('nickname')
+            user.picture = userinfo.get('picture')
+            user.email_verified = userinfo.get('email_verified')
+            user.locale = userinfo.get('locale')
+            user.name = userinfo.get('name')
+            user.last_login = datetime.utcnow()
+            user.login_count += 1
+        else:
+            # Create new user
+            user = cls(
+                auth0_id=userinfo['sub'],
+                email=userinfo.get('email'),
+                first_name=userinfo.get('given_name'),
+                last_name=userinfo.get('family_name'),
+                nickname=userinfo.get('nickname'),
+                picture=userinfo.get('picture'),
+                email_verified=userinfo.get('email_verified'),
+                locale=userinfo.get('locale'),
+                name=userinfo.get('name'),
+                last_login=datetime.utcnow(),
+                login_count=1
+            )
+            db.session.add(user)
+            
+        db.session.commit()
+        return user
+
+  
     def __repr__(self):
         return f'<User {self.id}: {self.email}>'

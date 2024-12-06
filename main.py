@@ -2,6 +2,7 @@ import os, psycopg2
 from auth_config import oauth, auth0, requires_auth
 from functools import wraps
 from flask import Flask, redirect, url_for, session, request, render_template
+from datetime import datetime
 
 # Models
 from members.member_model import db
@@ -83,6 +84,11 @@ def callback():
         token = auth0.authorize_access_token()
         resp = auth0.get('userinfo')
         userinfo = resp.json()
+        
+        # Save user info to database
+        User.create_or_update_from_auth0(userinfo)
+        
+        # Store user info in session
         session['user'] = userinfo
         return redirect('/')
     except Exception as e:
